@@ -2,7 +2,7 @@ QF_VERSION=$1
 
 rm -rf quickfix
 
-git clone https://github.com/quickfix/quickfix.git
+git clone --depth 1 https://github.com/quickfix/quickfix.git
 
 pushd quickfix/doc
 ./document.sh

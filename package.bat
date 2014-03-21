@@ -6,7 +6,7 @@ set QF_VERSION=%2
 
 rmdir /s/q quickfix
 
-git clone https://github.com/quickfix/quickfix.git
+git clone --depth 1 https://github.com/quickfix/quickfix.git
 
 pushd quickfix\doc
 call document.bat
