@@ -9,6 +9,7 @@ pushd quickfix/doc
 popd
 
 pushd quickfix
+../git2cl > ChangeLog
 ./bootstrap
 popd
 
