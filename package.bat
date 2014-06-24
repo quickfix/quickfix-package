@@ -14,7 +14,7 @@ call document.bat
 popd
 
 del /Q quickfix.zip
-7z a -tzip -xr!?git\* quickfix.zip quickfix
+7z a -tzip -xr!?git\* quickfix-%QF_VERSION%.zip quickfix
 
 pushd quickfix
 call build_vs%VS_VERSION%.bat
