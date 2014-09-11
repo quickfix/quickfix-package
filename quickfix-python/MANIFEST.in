@@ -1,1 +1,2 @@
 recursive-include C++ *.h *.hpp
+include LICENSE
