@@ -24,5 +24,5 @@ setup(name='quickfix',
       download_url='http://www.quickfixengine.org',
       license=license,
       include_dirs=['C++'],
-      ext_modules=[Extension('_quickfix', glob.glob('C++/*.cpp'))],
+      ext_modules=[Extension('_quickfix', glob.glob('C++/*.cpp'), extra_compile_args=['-std=c++0x'])],
 )

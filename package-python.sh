@@ -20,4 +20,4 @@ rm -f quickfix-python/C++/stdafx.*
 
 pushd quickfix-python
 
-python setup.py sdist upload -r prod
+python setup.py sdist upload -r pypi
