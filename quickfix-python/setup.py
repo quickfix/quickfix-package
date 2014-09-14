@@ -21,7 +21,7 @@ class build_ext_subclass( build_ext ):
 
         print "Testing for std::shared_ptr..."
         try:
-            self.compiler.compile(['test_std_shared_ptr.cpp'])
+            self.compiler.compile(['test_std_shared_ptr.cpp'], extra_preargs=['-std=c++0x']),
             self.compiler.define_macro("HAVE_STD_SHARED_PTR")
             print "...found"
         except:
