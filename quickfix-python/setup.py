@@ -27,13 +27,6 @@ class build_ext_subclass( build_ext ):
         except:
             print "...not found"
 
-#        c = self.compiler.compiler_type
-#        if copt.has_key(c):
-#           for e in self.extensions:
-#               e.extra_compile_args = copt[ c ]
-#        if lopt.has_key(c):
-#            for e in self.extensions:
-#                e.extra_link_args = lopt[ c ]
         build_ext.build_extensions(self)
 
 long_description=''

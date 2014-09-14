@@ -1,3 +1,4 @@
 recursive-include C++ *.h *.hpp
 include test*.cpp
 include LICENSE
+include spec/*.xml
