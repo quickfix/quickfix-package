@@ -2,11 +2,39 @@ from distutils.core import setup
 from distutils.core import Extension
 from distutils.command.install import install
 from distutils.command.build import build
+from distutils.command.build_ext import build_ext
 
 import subprocess
 import shutil
 import glob
 import os
+
+class build_ext_subclass( build_ext ):
+    def build_extensions(self):
+        print "Testing for std::tr1::shared_ptr..."
+        try:
+            self.compiler.compile(['test_std_tr1_shared_ptr.cpp'])
+            self.compiler.define_macro("HAVE_STD_TR1_SHARED_PTR")
+            print "...found"
+        except:
+            print " ...not found"
+
+        print "Testing for std::shared_ptr..."
+        try:
+            self.compiler.compile(['test_std_shared_ptr.cpp'])
+            self.compiler.define_macro("HAVE_STD_SHARED_PTR")
+            print "...found"
+        except:
+            print "...not found"
+
+#        c = self.compiler.compiler_type
+#        if copt.has_key(c):
+#           for e in self.extensions:
+#               e.extra_compile_args = copt[ c ]
+#        if lopt.has_key(c):
+#            for e in self.extensions:
+#                e.extra_link_args = lopt[ c ]
+        build_ext.build_extensions(self)
 
 long_description=''
 with open('LICENSE') as file:
@@ -24,5 +52,6 @@ setup(name='quickfix',
       download_url='http://www.quickfixengine.org',
       license=license,
       include_dirs=['C++'],
+      cmdclass = {'build_ext': build_ext_subclass },
       ext_modules=[Extension('_quickfix', glob.glob('C++/*.cpp'), extra_compile_args=['-std=c++0x'])],
 )
