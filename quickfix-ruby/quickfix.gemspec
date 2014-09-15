@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'quickfix'
+  s.name        = 'quickfix_ruby'
   s.version     = '1.14.3'
   s.date        = '2014-09-15'
   s.summary     = "QuickFIX"
