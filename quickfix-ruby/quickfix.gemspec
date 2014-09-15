@@ -6,8 +6,9 @@ Gem::Specification.new do |s|
   s.description = "FIX (Financial Information eXchange) protocol implementation",
   s.authors     = ["Oren Miller"]
   s.email       = 'oren@quickfixengine.org'
-  s.files       = Dir.glob("lib/*.rb") + Dir.glob("ext/quickfix/*.*")
+  s.files       = Dir.glob("lib/*.rb") + Dir.glob("ext/quickfix/*.*") + Dir.glob("spec/FIX*.xml") + Dir.glob("test/*") + Dir.glob("Rakefile") 
   s.extensions = %w[ext/quickfix/extconf.rb]
   s.homepage    =
     'http://www.quickfixengine.org'
+  s.licenses    = 'Apache Style'
 end

@@ -3,4 +3,5 @@
 *.cpp
 *.gem
 lib
+test
 LICENSE
