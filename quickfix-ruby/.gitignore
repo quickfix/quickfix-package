@@ -1,0 +1,6 @@
+*.h
+*.hpp
+*.cpp
+*.gem
+lib
+LICENSE
