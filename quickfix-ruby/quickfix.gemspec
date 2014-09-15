@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'quickfix'
-  s.version     = '1.14.2'
-  s.date        = '2014-09-14'
+  s.version     = '1.14.3'
+  s.date        = '2014-09-15'
   s.summary     = "QuickFIX"
   s.description = "FIX (Financial Information eXchange) protocol implementation",
   s.authors     = ["Oren Miller"]
