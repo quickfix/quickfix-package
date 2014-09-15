@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.homepage    =
     'http://www.quickfixengine.org'
   s.licenses    = 'Apache Style'
+  s.rdoc_options = ['--exclude=ext']
 end
