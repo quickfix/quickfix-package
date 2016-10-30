@@ -9,8 +9,8 @@ TODO
 #### macOS ####
 
 Use [HomeBrew] to install the necessary utilities:
-* Install [HomeBrew]: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-* Install brew packages: brew install automake libtool
+* Install [HomeBrew]: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+* Install brew packages: `brew install automake libtool`
 
 #### Windows ####
 
@@ -18,9 +18,9 @@ TODO
 
 # Compilation #
 
-* Build [QuickFIX]: bash package.sh `[quick_fix_version]`
-* Build Python wrappers (will fail without push access to [QuickFIX package index]): bash package-python.sh
-* Build Ruby wrappers: bash package-ruby.sh
+* Build [QuickFIX]: `bash package.sh [quick_fix_version]`
+* Build Python wrappers: `bash package-python.sh [-d]`
+* Build Ruby wrappers: `bash package-ruby.sh`
 
 [Autotools]: http://www.gnu.org/software/automake/manual/html_node/index.html
 [HomeBrew]: http://brew.sh/
