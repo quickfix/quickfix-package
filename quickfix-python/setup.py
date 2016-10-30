@@ -29,8 +29,8 @@ class build_ext_subclass( build_ext ):
         build_ext.build_extensions(self)
 
 long_description = ''
-with open('LICENSE') as file:
-    license = file.read();
+with open('LICENSE') as fp:
+    quickfix_license = fp.read()
 
 setup(name='quickfix',
       version='1.14.3',
@@ -54,7 +54,7 @@ setup(name='quickfix',
       description="FIX (Financial Information eXchange) protocol implementation",
       url='http://www.quickfixengine.org',
       download_url='http://www.quickfixengine.org',
-      license=license,
+      license=quickfix_license,
       include_dirs=['C++'],
       cmdclass={'build_ext': build_ext_subclass},
       ext_modules=[
@@ -62,4 +62,4 @@ setup(name='quickfix',
                     glob.glob('C++/*.cpp'),
                     extra_compile_args=['-std=c++0x'])
       ],
-)
+      )

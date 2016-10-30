@@ -1,3 +1,25 @@
+#!/usr/bin/env bash
+#
+# Compile and install Python QuickFIX package. Default behavior uploads to PyPI.
+# Use -d optional argument for local installation only
+#
+# Usage:
+# bash package-python.sh [-d]
+
+PRODUCTION=0
+
+while getopts "d" opt; do
+    case $opt in
+    d)
+        PRODUCTION=1
+        ;;
+    \?)
+        echo "Invalid option: -$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done
+
 rm -rf quickfix-python/C++
 rm -rf quickfix-python/spec
 rm -rf quickfix-python/quickfix*.py
@@ -24,4 +46,8 @@ rm -f quickfix-python/C++/stdafx.*
 
 pushd quickfix-python
 
-python setup.py sdist upload -r pypi
+if [ "$PRODUCTION" -eq "0" ]; then
+    python setup.py sdist upload -r pypi
+else
+    python setup.py install
+fi
