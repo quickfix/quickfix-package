@@ -1,3 +1,4 @@
+from __future__ import print_function
 from distutils.core import setup
 from distutils.core import Extension
 from distutils.command.install import install
@@ -8,26 +9,30 @@ import subprocess
 import shutil
 import glob
 import os
+import sys
 
 class build_ext_subclass( build_ext ):
     def build_extensions(self):
-        print "Testing for std::tr1::shared_ptr..."
+        print("Testing for std::tr1::shared_ptr...")
         try:
             self.compiler.compile(['test_std_tr1_shared_ptr.cpp'])
             self.compiler.define_macro("HAVE_STD_TR1_SHARED_PTR")
-            print "...found"
+            print("...found")
         except:
-            print " ...not found"
+            print(" ...not found")
 
-        print "Testing for std::shared_ptr..."
+        print("Testing for std::shared_ptr...")
         try:
             self.compiler.compile(['test_std_shared_ptr.cpp'], extra_preargs=['-std=c++0x']),
             self.compiler.define_macro("HAVE_STD_SHARED_PTR")
-            print "...found"
+            print("...found")
         except:
-            print "...not found"
+            print("...not found")
 
         build_ext.build_extensions(self)
+
+def get_cpp_macros():
+    return [('PYTHON_MAJOR_VERSION', sys.version_info.major)]
 
 long_description=''
 with open('LICENSE') as file:
@@ -47,5 +52,5 @@ setup(name='quickfix',
       license=license,
       include_dirs=['C++'],
       cmdclass = {'build_ext': build_ext_subclass },
-      ext_modules=[Extension('_quickfix', glob.glob('C++/*.cpp'), extra_compile_args=['-std=c++0x'])],
+      ext_modules=[Extension('_quickfix', glob.glob('C++/*.cpp'), define_macros = get_cpp_macros(), extra_compile_args=['-std=c++0x'])],
 )
