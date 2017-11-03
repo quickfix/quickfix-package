@@ -13,6 +13,7 @@ cp quickfix/src/python/*.py quickfix-python
 cp quickfix/src/C++/*.h quickfix-python/C++
 cp quickfix/src/C++/*.hpp quickfix-python/C++
 cp quickfix/src/C++/*.cpp quickfix-python/C++
+cp -r quickfix/src/C++/double-conversion quickfix-python/C++
 cp quickfix/src/python/QuickfixPython.cpp quickfix-python/C++
 cp quickfix/src/python/QuickfixPython.h quickfix-python/C++
 
@@ -24,4 +25,4 @@ rm -f quickfix-python/C++/stdafx.*
 
 pushd quickfix-python
 
-python setup.py sdist upload -r pypi
+python3 setup.py sdist upload -r pypi
