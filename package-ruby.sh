@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 rm -rf quickfix-ruby/lib
 rm -rf quickfix-ruby/ext/quickfix/*.h
 rm -rf quickfix-ruby/ext/quickfix/*.hpp
