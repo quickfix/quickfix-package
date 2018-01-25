@@ -34,12 +34,19 @@ class build_ext_subclass( build_ext ):
 def get_cpp_macros():
     return [('PYTHON_MAJOR_VERSION', sys.version_info.major)]
 
+def get_py_requires():
+    if sys.version_info.major >= 3:
+        return '>=3.5'
+    else:
+        return '==2.7.*'
+
 long_description=''
 with open('LICENSE') as file:
     license = file.read();
 
 setup(name='quickfix',
       version='1.14.3',
+      python_requires=get_py_requires(),
       py_modules=['quickfix', 'quickfixt11', 'quickfix40', 'quickfix41', 'quickfix42', 'quickfix43', 'quickfix44', 'quickfix50', 'quickfix50sp1', 'quickfix50sp2'],
       data_files=[('share/quickfix', glob.glob('spec/FIX*.xml'))],
       author='Oren Miller',
