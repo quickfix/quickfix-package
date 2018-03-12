@@ -19,5 +19,5 @@ rm -f quickfix-$QF_VERSION.tar.gz
 tar czvf quickfix-$QF_VERSION.tar.gz quickfix
 
 pushd quickfix
-./configure --with-python --with-ruby && make && make check
+./configure --with-python2 --with-python3 --with-ruby && make && make check
 popd
