@@ -7,6 +7,7 @@ rm -rf quickfix-ruby/spec
 
 mkdir -p quickfix-ruby/lib
 mkdir -p quickfix-ruby/ext/quickfix
+mkdir -p quickfix-ruby/ext/quickfix/double-conversion
 mkdir -p quickfix-ruby/test
 mkdir -p quickfix-ruby/spec
 
@@ -16,6 +17,7 @@ cp quickfix/src/ruby/quickfix*.rb quickfix-ruby/lib
 cp quickfix/src/C++/*.h quickfix-ruby/ext/quickfix
 cp quickfix/src/C++/*.hpp quickfix-ruby/ext/quickfix
 cp quickfix/src/C++/*.cpp quickfix-ruby/ext/quickfix
+cp quickfix/src/C++/double-conversion/* quickfix-ruby/ext/quickfix/double-conversion
 cp quickfix/src/ruby/QuickfixRuby.cpp quickfix-ruby/ext/quickfix
 cp quickfix/src/ruby/QuickfixRuby.h quickfix-ruby/ext/quickfix
 cp quickfix/src/ruby/test/*TestCase.rb quickfix-ruby/test
