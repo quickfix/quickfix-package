@@ -1,7 +1,13 @@
+#!/bin/bash
+
 rm -rf quickfix
+
 git clone --depth 1 https://github.com/quickfix/quickfix.git
 rm -rf quickfix/.git
 
+#Install for the python at hand
+rm -rf quickfix-python
+cp -r /io/quickfix-python ./quickfix-python
 rm -rf quickfix-python/C++
 rm -rf quickfix-python/spec
 rm -rf quickfix-python/quickfix*.py
@@ -29,5 +35,20 @@ touch quickfix-python/C++/Allocator.h
 rm -f quickfix-python/C++/stdafx.*
 
 pushd quickfix-python
-python setup.py sdist
-PYTHONWARNINGS="ignore" twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+for PYBIN in /opt/python/*/bin/; do
+	echo "$PYBIN"
+	"${PYBIN}/pip" wheel . -w quickfix-python-wheels
+done
+for whl in quickfix-python-wheels/*.whl; do
+    auditwheel repair "$whl" -w /io/quickfix-python-wheels/
+done
+popd
+
+#pushd quickfix
+#	./bootstrap
+#	./configure --with-python2
+#	make
+#	pushd src/python2
+#		make check
+#	popd
+#popd
