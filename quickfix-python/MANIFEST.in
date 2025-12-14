@@ -1,4 +1,7 @@
 recursive-include C++ *.h *.hpp *.cc
+recursive-include swig *.h
 include test*.cpp
 include LICENSE
 include spec/*.xml
+include README.md
+include setup.cfg

@@ -1,4 +1,8 @@
 *~
 *.gz
 *.zip
+*.bak
 /quickfix
+/quickfix-python/swig
+/quickfix-python/quickfix.egg-info
+/test_env_local

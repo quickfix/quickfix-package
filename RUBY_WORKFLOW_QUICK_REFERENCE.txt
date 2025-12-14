@@ -1,0 +1,178 @@
+#!/bin/bash
+
+# QuickFIX Ruby Packaging - Quick Reference
+# This shows the complete workflow with all scripts
+
+cat << 'EOF'
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                     QuickFIX Ruby Packaging Workflow                          ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+SCRIPT SUMMARY:
+───────────────
+
+1. package-ruby.sh
+   Purpose: Prepare and build the gem
+   Usage: ./package-ruby.sh [--build-only|--rubygems]
+   Output: quickfix-ruby/*.gem
+   
+2. validate-local-ruby-build.sh ⭐ MOST IMPORTANT
+   Purpose: Validate locally built gem INCLUDING C++ compilation test
+   Usage: ./validate-local-ruby-build.sh [path-to-gem]
+   Tests: 
+     • Gem file integrity
+     • Gem contents and structure
+     • Gem specification
+     • Extension files present
+     • ✓ C++ COMPILATION SUCCESS (exits 0 if compiles, 1 if fails)
+   
+3. publish-rubygems.sh
+   Purpose: Publish gem to RubyGems or test.rubygems.org
+   Usage: ./publish-rubygems.sh [path-to-gem] [--test]
+   Requires: RubyGems credentials in ~/.gem/credentials
+   
+4. validate-rubygems.sh
+   Purpose: Validate published gem after installation
+   Usage: ./validate-rubygems.sh [--test]
+   Tests:
+     • Gem installation success
+     • Core classes importable
+     • Native extension functional
+
+
+COMPLETE WORKFLOW - DEVELOPMENT & TESTING:
+────────────────────────────────────────────
+
+Step 1: Build the gem
+  $ ./package-ruby.sh --build-only
+  → Creates: quickfix-ruby/*.gem
+
+Step 2: Validate locally (CRITICAL - tests C++ compilation)
+  $ ./validate-local-ruby-build.sh
+  → Must pass all 5 tests including C++ compilation
+  → Exit code 0 = Ready to publish
+  → Exit code 1 = Fix issues before publishing
+
+Step 3: Publish to test repository
+  $ ./publish-rubygems.sh --test
+  → Tests credentials and publication process
+
+Step 4: Validate from test repository
+  $ ./validate-rubygems.sh --test
+  → Final verification that published package works
+
+
+COMPLETE WORKFLOW - PRODUCTION RELEASE:
+───────────────────────────────────────
+
+  $ ./validate-local-ruby-build.sh
+  $ ./publish-rubygems.sh
+  $ ./validate-rubygems.sh
+
+
+KEY FEATURES:
+─────────────
+
+✓ Full C++ Compilation Testing
+  - validate-local-ruby-build.sh actually compiles the C++ extension
+  - Proves the package will install successfully for users
+  - Fails fast if compilation errors exist
+
+✓ Test Repository Support
+  - Publish and validate on test.rubygems.org first
+  - Same process as production, so you know it will work
+
+✓ Clear Status Reporting
+  - Each test shows PASS/FAIL immediately
+  - Exit codes can be used in CI/CD pipelines
+  - Detailed error logs in /tmp/quickfix_compile_*.log
+
+✓ Parity with Python Workflow
+  - Ruby scripts mirror Python packaging scripts
+  - Same 4-step workflow (build → local validate → publish → remote validate)
+  - Consistent conventions and naming
+
+
+REQUIREMENTS:
+─────────────
+
+System:
+  • Ruby 1.8.7+ (tested with 2.x+)
+  • Build tools: build-essential, ruby-dev, libssl-dev (Ubuntu/Debian)
+  • C++ compiler: g++ with C++17 support
+
+For Publishing:
+  • RubyGems account: https://rubygems.org
+  • API key: https://rubygems.org/profile/api_keys
+  • Credentials saved to: ~/.gem/credentials
+
+
+TROUBLESHOOTING:
+────────────────
+
+Q: validate-local-ruby-build.sh fails with C++ errors
+A: Install build dependencies:
+   $ sudo apt-get install build-essential ruby-dev libssl-dev
+   $ xcode-select --install  (macOS)
+
+Q: publish-rubygems.sh says credentials not found
+A: Create API key and save credentials:
+   $ gem push path/to/gem.gem  (prompts for API key, saves credentials)
+   Then retry: ./publish-rubygems.sh path/to/gem.gem
+
+Q: validate-rubygems.sh says classes not found
+A: May be architecture mismatch, rebuild from scratch:
+   $ gem uninstall quickfix_ruby -a
+   $ ./validate-local-ruby-build.sh
+   $ gem install quickfix_ruby --local
+
+
+EXAMPLE - FULL WORKFLOW:
+────────────────────────
+
+# Build
+$ ./package-ruby.sh --build-only
+Building gem: quickfix_ruby-1.16.1.gem
+
+# Validate locally (MUST PASS before publishing)
+$ ./validate-local-ruby-build.sh
+Test 1: Checking gem file integrity... ✓ VALID
+Test 2: Checking gem contents... ✓ VALID
+Test 3: Verifying gem specification... ✓ VALID
+Test 4: Verifying extension files... ✓ PRESENT
+Test 5: Compiling C++ extensions... ✓ SUCCESSFUL
+
+All validation tests PASSED!
+This gem is fully validated and ready for publication.
+
+# Publish to test repository
+$ ./publish-rubygems.sh --test
+✓ Gem published successfully!
+Gem details:
+  Name: quickfix_ruby
+  Version: 1.16.1
+  Repository: test.rubygems.org
+
+# Validate from test
+$ ./validate-rubygems.sh --test
+✓ Gem installed: quickfix_ruby 1.16.1
+✓ Core QuickFIX classes are available
+✓ Native extension is functional
+All validation tests PASSED!
+
+# Ready for production
+$ ./publish-rubygems.sh
+✓ Gem published successfully!
+
+
+DOCUMENTATION:
+───────────────
+
+See RUBY_PUBLISHING.md for:
+  • Detailed explanation of each step
+  • Build requirements
+  • Advanced troubleshooting
+  • Comparison with Python workflow
+
+EOF
