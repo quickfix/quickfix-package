@@ -15,13 +15,13 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
-        os: [ubuntu-22.04, macos-13]
-        python-version: ["3.11", "3.14"]
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
-    # Optional: don't fail the whole job if 3.14 is flaky
-    continue-on-error: ${{ matrix.python-version == '3.14' }}
+    # Optional: all jobs should pass
+    continue-on-error: false
 
     steps:
       - name: Checkout repository
@@ -67,4 +67,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wheels-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: dist/*.whl
+          path: quickfix-py/dist/*.whl
