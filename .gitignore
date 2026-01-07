@@ -5,5 +5,5 @@
 *.gz
 *.zip
 *.egg-info
-/quickfix
+quickfix/
 build/
