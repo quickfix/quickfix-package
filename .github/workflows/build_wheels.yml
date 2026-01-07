@@ -33,6 +33,10 @@ jobs:
           repository: pablodcar/quickfix
           ref: master
           path: quickfix
+      
+      - name: workaround for setup-python # setup-python expects a requirments.txt
+        run: |
+          touch requirements.txt
 
       - name: Set up Python
         uses: actions/setup-python@v5
