@@ -8,3 +8,4 @@ apt-get install ruby
 apt-get install ruby-dev
 apt-get install python
 apt-get install python-dev
+apt-get install twine
