@@ -6,6 +6,7 @@
 /quickfix-python/swig
 /quickfix-python/quickfix.egg-info
 /test_env_local
+/test_env_validation
 /venv
 /test_install_python
 /test_install_ruby

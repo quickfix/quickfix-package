@@ -59,19 +59,19 @@ begin
 
   classes_to_test = [
     'Quickfix::Session',
-    'Quickfix::SocketInitiator',
-    'Quickfix::SocketAcceptor',
+    'Quickfix::SocketInitiatorBase',
+    'Quickfix::SocketAcceptorBase',
     'Quickfix::Message',
-    'Quickfix::Field',
+    'Quickfix::FieldBase',
     'Quickfix::Group',
-    'Quickfix::MessageFactory',
-    'Quickfix::DataDictionaryProvider',
+    'Quickfix::MessageStoreFactory',
+    'Quickfix::DataDictionary',
   ]
 
   missing = []
   classes_to_test.each do |class_name|
     begin
-      Object.const_get(class_name.split('::'))
+      class_name.split('::').reduce(Object) { |m, c| m.const_get(c) }
       puts "  ✓ #{class_name}"
     rescue NameError
       missing << class_name
@@ -113,8 +113,8 @@ begin
   require 'quickfix'
 
   msg = Quickfix::Message.new
-  field = Quickfix::Field(35)
-  msg.setField(field, 'D')
+  field = Quickfix::StringField.new(35, 'D')
+  msg.setField(field)
 
   puts "✓ Native extension working"
   exit 0
