@@ -35,10 +35,10 @@ pip install --upgrade pip
 echo ""
 if [ -n "$VERSION" ]; then
     echo "Installing quickfix==$VERSION from Test PyPI..."
-    pip install --index-url https://test.pypi.org/simple/ --no-deps quickfix==$VERSION
+    pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ --no-deps quickfix==$VERSION
 else
     echo "Installing latest quickfix from Test PyPI..."
-    pip install --index-url https://test.pypi.org/simple/ --no-deps quickfix
+    pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ --no-deps quickfix
 fi
 
 # Run validation tests
@@ -57,7 +57,7 @@ python3 -c "import quickfix; print('✓ Successfully imported quickfix')" || {
 # Test 2: Check version
 echo ""
 echo "Test 2: Checking package version..."
-INSTALLED_VERSION=$(python3 -c "import quickfix; import pkg_resources; print(pkg_resources.get_distribution('quickfix').version)")
+INSTALLED_VERSION=$(python3 -c "from importlib.metadata import version; print(version('quickfix'))")
 echo "✓ Installed version: $INSTALLED_VERSION"
 
 # Test 3: Check if core classes are available
