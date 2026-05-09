@@ -107,13 +107,13 @@ This is useful for quickly verifying that all necessary files (especially swig h
 **Recommended:** Test your locally built package before uploading to any PyPI repository:
 
 ```bash
-./validate-local-build.sh
+./validate-local-python-build.sh
 ```
 
 Or specify a specific distribution file:
 
 ```bash
-./validate-local-build.sh quickfix-python/dist/quickfix-1.15.1.tar.gz
+./validate-local-python-build.sh quickfix-python/dist/quickfix-1.15.1.tar.gz
 ```
 
 The local validation script:
@@ -178,7 +178,7 @@ Successful validation will show:
 ./inspect-package.sh
 
 # Step 3: Validate the local build
-./validate-local-build.sh
+./validate-local-python-build.sh
 
 # Step 4: Publish to Test PyPI (only if local validation passed)
 ./publish-test-pypi.sh
@@ -199,7 +199,7 @@ Successful validation will show:
 ./inspect-package.sh
 
 # Step 4: Validate the local build one more time
-./validate-local-build.sh
+./validate-local-python-build.sh
 
 # Step 5: Publish to Production PyPI (only if validation passed)
 ./package-python.sh --pypi
@@ -266,7 +266,7 @@ PyPI does not allow re-uploading the same version. If you need to fix something:
 ## Best Practices
 
 1. **Inspect package contents** - Run `./inspect-package.sh` to verify all files (especially swig headers) are included
-2. **Always validate locally first** - Run `./validate-local-build.sh` before uploading anywhere
+2. **Always validate locally first** - Run `./validate-local-python-build.sh` before uploading anywhere
 3. **Always test on Test PyPI first** before publishing to production
 4. **Run validation after publishing** - Verify the package works when installed by users
 5. **Increment version numbers** in `setup.py` before publishing
@@ -283,8 +283,8 @@ PyPI does not allow re-uploading the same version. If you need to fix something:
 | `./publish-test-pypi.sh` | Upload pre-built package to Test PyPI |
 | `./inspect-package.sh` | Inspect contents of built package |
 | `./inspect-package.sh FILE` | Inspect specific distribution file |
-| `./validate-local-build.sh` | Validate locally built package before uploading |
-| `./validate-local-build.sh FILE` | Validate specific local distribution file |
+| `./validate-local-python-build.sh` | Validate locally built package before uploading |
+| `./validate-local-python-build.sh FILE` | Validate specific local distribution file |
 | `./validate-test-pypi.sh` | Validate package from Test PyPI |
 | `./validate-test-pypi.sh VERSION` | Validate specific version from Test PyPI |
 
