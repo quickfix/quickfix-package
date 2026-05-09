@@ -1,24 +1,7 @@
 #!/bin/bash
 
-# Script to validate QuickFix Ruby gem installed from RubyGems or test repository
-# Usage: ./validate-rubygems.sh [--test]
-# Default: validates from RubyGems.org
-# With --test: validates from test.rubygems.org
-
-TEST_SERVER=false
-
-# Parse arguments
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --test)
-            TEST_SERVER=true
-            shift
-            ;;
-        *)
-            shift
-            ;;
-    esac
-done
+# Script to validate QuickFix Ruby gem installed from RubyGems
+# Usage: ./validate-rubygems.sh
 
 echo "=== Validating QuickFix Ruby Gem from RubyGems ==="
 echo ""
@@ -30,15 +13,7 @@ if ! command -v gem &> /dev/null; then
     exit 1
 fi
 
-# Determine target server
-if [ "$TEST_SERVER" = true ]; then
-    SERVER_NAME="test.rubygems.org"
-    echo "Validating gem from test server: $SERVER_NAME"
-else
-    SERVER_NAME="RubyGems.org"
-    echo "Validating gem from production: $SERVER_NAME"
-fi
-
+echo "Validating gem from production: RubyGems.org"
 echo ""
 
 # Get installed version
@@ -47,15 +22,11 @@ INSTALLED=$(gem list quickfix_ruby | grep quickfix_ruby)
 if [ -z "$INSTALLED" ]; then
     echo "quickfix_ruby gem not found locally"
     echo ""
-    echo "Installing quickfix_ruby from $SERVER_NAME..."
+    echo "Installing quickfix_ruby from RubyGems.org..."
     echo ""
-    
-    if [ "$TEST_SERVER" = true ]; then
-        gem install quickfix_ruby --source https://test.rubygems.org/api/v1/ -V 2>&1 | tail -20
-    else
-        gem install quickfix_ruby -V 2>&1 | tail -20
-    fi
-    
+
+    gem install quickfix_ruby -V 2>&1 | tail -20
+
     if [ $? -ne 0 ]; then
         echo ""
         echo "Error: Failed to install quickfix_ruby"
@@ -81,13 +52,11 @@ fi
 echo ""
 echo "Test 2: Checking core QuickFIX classes..."
 
-# Create a test Ruby script to verify classes
 TEST_SCRIPT=$(mktemp)
 cat > "$TEST_SCRIPT" << 'EOF'
 begin
   require 'quickfix'
-  
-  # Test basic classes
+
   classes_to_test = [
     'Quickfix::Session',
     'Quickfix::SocketInitiator',
@@ -98,7 +67,7 @@ begin
     'Quickfix::MessageFactory',
     'Quickfix::DataDictionaryProvider',
   ]
-  
+
   missing = []
   classes_to_test.each do |class_name|
     begin
@@ -108,7 +77,7 @@ begin
       missing << class_name
     end
   end
-  
+
   if missing.empty?
     puts ""
     puts "All core classes available!"
@@ -142,14 +111,11 @@ TEST_SCRIPT=$(mktemp)
 cat > "$TEST_SCRIPT" << 'EOF'
 begin
   require 'quickfix'
-  
-  # Try to create a simple message
+
   msg = Quickfix::Message.new
-  
-  # Try to set a field
   field = Quickfix::Field(35)
   msg.setField(field, 'D')
-  
+
   puts "✓ Native extension working"
   exit 0
 rescue => e
@@ -177,6 +143,6 @@ echo "Package Summary:"
 echo "  Package: quickfix_ruby"
 echo "  Version: $GEM_VERSION"
 echo "  Status: Installed and functional"
-echo "  Repository: $SERVER_NAME"
+echo "  Repository: RubyGems.org"
 echo ""
 echo "The gem is working correctly!"

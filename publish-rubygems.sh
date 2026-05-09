@@ -1,20 +1,13 @@
 #!/bin/bash
 
-# Script to publish QuickFix Ruby gem to RubyGems or test repository
-# Usage: ./publish-rubygems.sh [path-to-gem-file] [--test]
-# Default: publishes to RubyGems
-# With --test: publishes to test.rubygems.org
+# Script to publish QuickFix Ruby gem to RubyGems
+# Usage: ./publish-rubygems.sh [path-to-gem-file]
 
 GEM_FILE=""
-TEST_SERVER=false
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --test)
-            TEST_SERVER=true
-            shift
-            ;;
         *)
             GEM_FILE=$1
             shift
@@ -32,17 +25,7 @@ if ! command -v gem &> /dev/null; then
     exit 1
 fi
 
-# Determine target server
-if [ "$TEST_SERVER" = true ]; then
-    SERVER_NAME="test.rubygems.org"
-    SERVER_URL="https://test.rubygems.org/api/v1/gems"
-    echo "Publishing to test server: $SERVER_NAME"
-else
-    SERVER_NAME="RubyGems.org"
-    SERVER_URL="https://rubygems.org/api/v1/gems"
-    echo "Publishing to production: $SERVER_NAME"
-fi
-
+echo "Publishing to production: RubyGems.org"
 echo ""
 
 # If no gem file specified, find the latest one
@@ -52,9 +35,9 @@ if [ -z "$GEM_FILE" ]; then
         echo "Build the gem first with: ./package-ruby.sh"
         exit 1
     fi
-    
+
     GEM_FILE=$(ls -t quickfix-ruby/*.gem 2>/dev/null | head -1)
-    
+
     if [ -z "$GEM_FILE" ]; then
         echo "Error: No gem file found"
         echo "Build the gem first with: ./package-ruby.sh"
@@ -87,16 +70,10 @@ if [ ! -f "$CREDENTIALS_FILE" ]; then
 fi
 
 # Publish the gem
-echo "Pushing gem to $SERVER_NAME..."
+echo "Pushing gem to RubyGems.org..."
 echo ""
 
-if [ "$TEST_SERVER" = true ]; then
-    # For test server, we typically use the default credentials or specific test credentials
-    # Most setups use the standard gem push which reads from ~/.gem/credentials
-    gem push "$GEM_FILE" --host https://test.rubygems.org
-else
-    gem push "$GEM_FILE"
-fi
+gem push "$GEM_FILE"
 
 PUSH_EXIT_CODE=$?
 
@@ -106,28 +83,21 @@ if [ $PUSH_EXIT_CODE -eq 0 ]; then
     echo "=== Publication Successful ==="
     echo ""
     echo "✓ Gem published successfully!"
-    
+
     # Extract version from filename
     GEM_VERSION=$(basename "$GEM_FILE" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-    
+
     if [ -n "$GEM_VERSION" ]; then
         echo ""
         echo "Gem details:"
         echo "  Name: quickfix_ruby"
         echo "  Version: $GEM_VERSION"
-        echo "  Repository: $SERVER_NAME"
-        
-        if [ "$TEST_SERVER" = true ]; then
-            echo ""
-            echo "To verify the gem, visit:"
-            echo "  https://test.rubygems.org/gems/quickfix_ruby/versions/$GEM_VERSION"
-        else
-            echo ""
-            echo "To verify the gem, visit:"
-            echo "  https://rubygems.org/gems/quickfix_ruby"
-        fi
+        echo "  Repository: RubyGems.org"
+        echo ""
+        echo "To verify the gem, visit:"
+        echo "  https://rubygems.org/gems/quickfix_ruby"
     fi
-    
+
     exit 0
 else
     echo "=== Publication Failed ==="
@@ -137,8 +107,7 @@ else
     echo "Troubleshooting:"
     echo "  1. Check your RubyGems credentials: $CREDENTIALS_FILE"
     echo "  2. Verify your API key is valid"
-    echo "  3. For test server, ensure credentials support test.rubygems.org"
-    echo "  4. Try validating first: ./validate-local-ruby-build.sh $GEM_FILE"
-    
+    echo "  3. Try validating first: ./validate-local-ruby-build.sh $GEM_FILE"
+
     exit 1
 fi

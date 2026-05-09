@@ -15,15 +15,17 @@ This guide explains how to publish and validate the QuickFIX Ruby gem to RubyGem
 
 2. **Set up a RubyGems account:**
    - Production: https://rubygems.org
-   - Test: https://test.rubygems.org
 
 3. **Configure authentication:**
    - Generate an API key: https://rubygems.org/profile/api_keys
-   - Save credentials by running `gem push` once — it will prompt for your key and save it to `~/.gem/credentials`
+   - Save credentials:
+     ```bash
+     mkdir -p ~/.gem
+     echo ':rubygems_api_key: YOUR_API_KEY' >> ~/.gem/credentials
+     chmod 0600 ~/.gem/credentials
+     ```
 
 ## Publishing Workflow
-
-### For Testing (Recommended First)
 
 ```bash
 # Step 1: Build the gem
@@ -32,23 +34,10 @@ This guide explains how to publish and validate the QuickFIX Ruby gem to RubyGem
 # Step 2: Validate locally (MUST pass before publishing)
 ./validate-local-ruby-build.sh
 
-# Step 3: Publish to test repository
-./publish-rubygems.sh --test
-
-# Step 4: Validate the published gem
-./validate-rubygems.sh --test
-```
-
-### For Production
-
-```bash
-# Step 1: Ensure local validation passes
-./validate-local-ruby-build.sh
-
-# Step 2: Publish to production RubyGems
+# Step 3: Publish to RubyGems
 ./publish-rubygems.sh
 
-# Step 3: Validate production publication
+# Step 4: Validate the published gem
 ./validate-rubygems.sh
 ```
 
@@ -90,14 +79,11 @@ Compiler output is saved to `/tmp/quickfix_compile_*.log` for debugging.
 
 ### publish-rubygems.sh
 
-Publishes the gem to RubyGems.org or the test repository.
+Publishes the gem to RubyGems.org.
 
 ```bash
-./publish-rubygems.sh [path-to-gem-file] [--test]
+./publish-rubygems.sh [path-to-gem-file]
 ```
-
-- Default: publishes to RubyGems.org (production)
-- `--test`: publishes to test.rubygems.org
 
 Requires credentials in `~/.gem/credentials`.
 
@@ -105,14 +91,11 @@ Requires credentials in `~/.gem/credentials`.
 
 ### validate-rubygems.sh
 
-Validates the gem after it has been published and installed from a repository.
+Validates the gem after it has been published and installed from RubyGems.org.
 
 ```bash
-./validate-rubygems.sh [--test]
+./validate-rubygems.sh
 ```
-
-- Default: validates from RubyGems.org
-- `--test`: validates from test.rubygems.org
 
 Runs 3 tests:
 
@@ -140,8 +123,9 @@ rm -rf quickfix-ruby/ext/quickfix/*.o quickfix-ruby/ext/quickfix/*.so
 ### Publication Fails: Credentials Not Found
 
 ```bash
-# Run gem push manually — it will prompt for your API key and save credentials
-gem push path/to/gem.gem
+mkdir -p ~/.gem
+echo ':rubygems_api_key: YOUR_API_KEY' >> ~/.gem/credentials
+chmod 0600 ~/.gem/credentials
 
 # Then retry
 ./publish-rubygems.sh path/to/gem.gem
@@ -161,11 +145,9 @@ gem install quickfix_ruby --local
 Before publishing to production:
 
 - [ ] `./validate-local-ruby-build.sh` passes all 5 tests including C++ compilation
-- [ ] `./publish-rubygems.sh --test` succeeds
-- [ ] `./validate-rubygems.sh --test` passes
 - [ ] No errors in `/tmp/quickfix_compile_*.log`
 - [ ] Version number is correct and unique
-- [ ] `./publish-rubygems.sh` succeeds for production
+- [ ] `./publish-rubygems.sh` succeeds
 
 ## Quick Reference
 
@@ -174,14 +156,12 @@ Before publishing to production:
 | `./package-ruby.sh --build-only` | Build gem only |
 | `./validate-local-ruby-build.sh` | Validate locally built gem (includes C++ compilation) |
 | `./validate-local-ruby-build.sh FILE` | Validate a specific gem file |
-| `./publish-rubygems.sh` | Publish to production RubyGems |
-| `./publish-rubygems.sh --test` | Publish to test.rubygems.org |
-| `./validate-rubygems.sh` | Validate gem from production |
-| `./validate-rubygems.sh --test` | Validate gem from test repository |
+| `./publish-rubygems.sh` | Publish to RubyGems.org |
+| `./publish-rubygems.sh FILE` | Publish a specific gem file |
+| `./validate-rubygems.sh` | Validate gem from RubyGems.org |
 
 ## Resources
 
 - RubyGems: https://rubygems.org
-- Test RubyGems: https://test.rubygems.org
 - RubyGems Publishing Guide: https://guides.rubygems.org/publishing/
 - SWIG Ruby Documentation: http://www.swig.org/Doc4.2/Ruby.html
