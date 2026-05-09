@@ -30,6 +30,7 @@ rm -rf quickfix-python/spec
 rm -rf quickfix-python/quickfix*.py
 rm -rf quickfix-python/doc
 rm -rf quickfix-python/LICENSE
+rm -rf quickfix-python/dist
 
 # Create directories
 mkdir quickfix-python/C++
@@ -99,4 +100,3 @@ elif [ "$MODE" == "pypi" ]; then
     echo "Package uploaded to Production PyPI!"
     echo "View it at: https://pypi.org/project/quickfix/"
 fi
-# PYTHONWARNINGS="ignore" twine upload --repository testpypi dist/*
