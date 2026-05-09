@@ -6,3 +6,9 @@
 /quickfix-python/swig
 /quickfix-python/quickfix.egg-info
 /test_env_local
+/venv
+/test_install_python
+/test_install_ruby
+/quickfix-ruby/ext/quickfix/Makefile
+/quickfix-ruby/ext/quickfix/double-conversion
+/quickfix-ruby/spec
